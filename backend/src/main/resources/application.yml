@@ -1,0 +1,66 @@
+# logging:
+#   level:
+#     org.hibernate.SQL: OFF
+#     org.hibernate.engine.jdbc.spi.SqlExceptionHelper: ERROR
+#     org.springframework.web: ERROR
+server:
+  tomcat:
+     threads:
+      max: 400
+      min-spare: 100
+      accept-count: 1000
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/supplychain
+    username: postgres  
+    password: "#ussrA1943"
+    driver-class-name: org.postgresql.Driver
+    
+   
+  hikari:
+    maximum-pool-size: 120
+    minimum-idle: 20
+    idle-timeout: 30000
+    connection-timeout: 2000
+    max-lifetime: 1800000
+
+  security:
+    debug:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 200
+        max-idle: 100
+        min-idle: 20
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: default-group-v4
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      max-poll-records: 1000
+      fetch-min-bytes: 100000
+      fetch-max-wait-ms: 100
+      properties:
+        spring.json.trusted.packages: "*"
+    listener:
+      ack-mode: batch
+      retry:
+        attempts: 3
+    producer:
+      acks: 0
+      linger.ms: 50
+      batch.size: 256KB
+      compression.type: snappy
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
